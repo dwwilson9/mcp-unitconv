@@ -66,6 +66,14 @@ function handleToolsCall(
     );
     return;
   }
+  if (!Number.isFinite(value)) {
+    sendError(id, -32602, "value must be a finite number");
+    return;
+  }
+  if (from.trim() === "" || to.trim() === "") {
+    sendError(id, -32602, "from and to must be non-empty unit strings");
+    return;
+  }
 
   try {
     const result = convert(value, from, to);

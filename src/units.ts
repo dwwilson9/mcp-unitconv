@@ -49,6 +49,13 @@ export class DimensionMismatchError extends Error {
   }
 }
 
+export class BelowAbsoluteZeroError extends Error {
+  constructor(value: number, unit: string) {
+    super(`${value} ${unit} is below absolute zero`);
+    this.name = "BelowAbsoluteZeroError";
+  }
+}
+
 function dimensionOf(unit: string): Dimension {
   if (TEMPERATURE_UNITS.has(unit)) return "temperature";
   const entry = LINEAR_UNITS[unit];
@@ -57,16 +64,22 @@ function dimensionOf(unit: string): Dimension {
 }
 
 function toKelvin(value: number, unit: string): number {
+  let kelvin: number;
   switch (unit) {
     case "K":
-      return value;
+      kelvin = value;
+      break;
     case "C":
-      return value + 273.15;
+      kelvin = value + 273.15;
+      break;
     case "F":
-      return ((value - 32) * 5) / 9 + 273.15;
+      kelvin = ((value - 32) * 5) / 9 + 273.15;
+      break;
     default:
       throw new UnknownUnitError(unit);
   }
+  if (kelvin < 0) throw new BelowAbsoluteZeroError(value, unit);
+  return kelvin;
 }
 
 function fromKelvin(value: number, unit: string): number {

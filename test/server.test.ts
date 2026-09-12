@@ -104,6 +104,21 @@ test("tools/call reports a conversion failure as a tool error, not a protocol er
   server.close();
 });
 
+test("tools/call reports a below-absolute-zero value as a tool error", async () => {
+  const server = startServer();
+  server.send({
+    jsonrpc: "2.0",
+    id: 9,
+    method: "tools/call",
+    params: { name: "convert", arguments: { value: -300, from: "C", to: "F" } },
+  });
+  const response = JSON.parse(await server.nextLine());
+  assert.equal(response.error, undefined);
+  assert.equal(response.result.isError, true);
+  assert.match(response.result.content[0].text, /below absolute zero/);
+  server.close();
+});
+
 test("tools/call rejects an unknown tool name", async () => {
   const server = startServer();
   server.send({

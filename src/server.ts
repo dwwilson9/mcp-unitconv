@@ -1,5 +1,10 @@
 import { createInterface } from "node:readline";
-import { convert, DimensionMismatchError, UnknownUnitError } from "./units.ts";
+import {
+  convert,
+  BelowAbsoluteZeroError,
+  DimensionMismatchError,
+  UnknownUnitError,
+} from "./units.ts";
 
 // MCP stdio transport: one JSON-RPC message per line, no Content-Length
 // framing (that's LSP, not MCP).
@@ -81,7 +86,8 @@ function handleToolsCall(
   } catch (err) {
     if (
       err instanceof DimensionMismatchError ||
-      err instanceof UnknownUnitError
+      err instanceof UnknownUnitError ||
+      err instanceof BelowAbsoluteZeroError
     ) {
       // A tool-level failure, not a protocol failure - report it as a
       // successful call whose result is an error, per the MCP tools spec.

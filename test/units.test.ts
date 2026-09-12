@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   convert,
+  BelowAbsoluteZeroError,
   DimensionMismatchError,
   UnknownUnitError,
 } from "../src/units.ts";
@@ -62,4 +63,15 @@ test("unknown source unit throws", () => {
 
 test("unknown target unit throws", () => {
   assert.throws(() => convert(1, "m", "furlong"), UnknownUnitError);
+});
+
+test("temperature below absolute zero throws", () => {
+  assert.throws(() => convert(-300, "C", "F"), BelowAbsoluteZeroError);
+  assert.throws(() => convert(-500, "F", "C"), BelowAbsoluteZeroError);
+  assert.throws(() => convert(-1, "K", "C"), BelowAbsoluteZeroError);
+});
+
+test("exactly absolute zero is allowed", () => {
+  assert.ok(Math.abs(convert(-273.15, "C", "K") - 0) < 1e-9);
+  assert.ok(Math.abs(convert(0, "K", "F") - -459.67) < 1e-9);
 });

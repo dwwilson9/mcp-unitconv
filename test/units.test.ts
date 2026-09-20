@@ -53,6 +53,17 @@ test("same unit is a no-op", () => {
   assert.equal(convert(7, "kg", "kg"), 7);
 });
 
+test("same non-base unit is an exact no-op, not a lossy round trip", () => {
+  assert.equal(convert(1, "km", "km"), 1);
+  assert.equal(convert(98.6, "F", "F"), 98.6);
+  assert.equal(convert(37, "C", "C"), 37);
+});
+
+test("same-unit conversion skips absolute-zero validation", () => {
+  assert.equal(convert(-500, "F", "F"), -500);
+  assert.equal(convert(-300, "C", "C"), -300);
+});
+
 test("dimension mismatch throws", () => {
   assert.throws(() => convert(1, "km", "kg"), DimensionMismatchError);
 });

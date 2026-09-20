@@ -102,6 +102,12 @@ export function convert(value: number, from: string, to: string): number {
     throw new DimensionMismatchError(from, fromDim, to, toDim);
   }
 
+  // Converting a unit to itself is an identity, not an arithmetic operation.
+  // Skipping the multiply/divide (or Celsius<->Kelvin) round trip avoids
+  // floating-point drift and spurious absolute-zero errors on values that
+  // were never actually being converted.
+  if (from === to) return value;
+
   if (fromDim === "temperature") {
     return fromKelvin(toKelvin(value, from), to);
   }

@@ -17,12 +17,15 @@ const LINEAR_UNITS: Record<string, LinearUnit> = {
   yd: { dimension: "length", toBase: 0.9144 },
   ft: { dimension: "length", toBase: 0.3048 },
   in: { dimension: "length", toBase: 0.0254 },
+  nmi: { dimension: "length", toBase: 1852 },
 
   kg: { dimension: "mass", toBase: 1 },
   g: { dimension: "mass", toBase: 0.001 },
   mg: { dimension: "mass", toBase: 0.000001 },
   lb: { dimension: "mass", toBase: 0.45359237 },
   oz: { dimension: "mass", toBase: 0.028349523125 },
+  // 14 international pounds
+  st: { dimension: "mass", toBase: 6.35029318 },
 
   s: { dimension: "time", toBase: 1 },
   ms: { dimension: "time", toBase: 0.001 },

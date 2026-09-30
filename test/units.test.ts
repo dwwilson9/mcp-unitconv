@@ -29,6 +29,26 @@ test("mass: oz to g", () => {
   assert.ok(Math.abs(convert(16, "oz", "g") - 453.59237) < 1e-9);
 });
 
+test("length: nmi to m is exactly 1852", () => {
+  assert.equal(convert(1, "nmi", "m"), 1852);
+});
+
+test("length: nmi to km", () => {
+  assert.ok(Math.abs(convert(10, "nmi", "km") - 18.52) < 1e-9);
+});
+
+test("mass: st to lb is 14", () => {
+  assert.ok(Math.abs(convert(1, "st", "lb") - 14) < 1e-9);
+});
+
+test("mass: st to kg", () => {
+  assert.ok(Math.abs(convert(1, "st", "kg") - 6.35029318) < 1e-12);
+});
+
+test("nmi and st do not cross dimensions", () => {
+  assert.throws(() => convert(1, "nmi", "st"), DimensionMismatchError);
+});
+
 test("time: h to s", () => {
   assert.equal(convert(1, "h", "s"), 3600);
 });

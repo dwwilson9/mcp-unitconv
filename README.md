@@ -5,6 +5,11 @@ between units without guessing arithmetic.
 
 Supports length, mass, time and temperature.
 
+- length: `mm`, `cm`, `m`, `km`, `in`, `ft`, `yd`, `mi`, `nmi`
+- mass: `mg`, `g`, `kg`, `oz`, `lb`, `st`
+- time: `ms`, `s`, `min`, `h`, `day`
+- temperature: `C`, `F`, `K`
+
 ## Install
 
 ```bash
